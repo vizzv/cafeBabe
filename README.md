@@ -16,8 +16,6 @@
 
 Welcome to the fantastical world of cafeBabe! ☕️ This repository is dedicated to the art of converting Java class files to JVM instructions using the enchanting language of Python, embellished with symbols that add an extra touch of magic. 
 
-The repository's logo, a steaming cup of coffee ☕️ playfully entwined with a cunning snake 🐍, sets the tone for the incredible fusion of Java and Python that lies within. 
-
 ## ✨ Features
 
 - 🧙 Magical Transformation: Watch as the Python sorcerers cast their spells, transforming Java class files into dynamic JVM instructions.
