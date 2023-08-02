@@ -5,13 +5,14 @@
 **cafeBabe** is a whimsical GitHub repository that weaves a magical tale of code transformation. 🎩✨ It offers a captivating experience where Java class files are gracefully converted into mesmerizing Java Virtual Machine (JVM) instructions, all orchestrated by the mystical powers of Python! 🐍
 
 # 🌌Table of Contents
-- [Introduction](#💡Introduction)
+- [Introduction](#Introduction)
 - [Features](#✨Features)
 - [Getting Started](#🚀Getting-Started)
 - [Usage](#🎶Usage)
 - [Contributing](#🙌Contributing)
 - [License](#📄License)
 
+<a href="Introduction">
 # 💡Introduction
 
 Welcome to the fantastical world of cafeBabe! ☕️ This repository is dedicated to the art of converting Java class files to JVM instructions using the enchanting language of Python, embellished with symbols that add an extra touch of magic. 
