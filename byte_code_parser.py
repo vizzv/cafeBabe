@@ -144,6 +144,7 @@ def parse_class_file(file_path):
             elif(tag==CONSTANT_MethodType):
                 cp_info['tag']="CONSTANT_MethodType"
                 cp_info['discriptor_index']=byte_to_int(u2(file))
+                
             elif(tag==CONSTANT_InvokeDynamic):
                 cp_info['tag']="CONSTANT_InvokeDynamic"
                 cp_info['bootstrap_method_attr_index']=byte_to_int(u2(file))
