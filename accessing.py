@@ -2,7 +2,7 @@ import byte_code_parser as myParser
 import pprint as pp
 import io
 
-file_path_='./Main.class'
+file_path_='./something.class'
 
 myClass=myParser.parse_class_file(file_path=file_path_)
 const_pool=myClass['constant_pool']
