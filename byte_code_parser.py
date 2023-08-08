@@ -150,7 +150,7 @@ def parse_class_file(file_path):
                 cp_info['name_and_type_index']=byte_to_int(u2(file))
             else:
                 print(tag)
-                print("@@@@@@@@")
+                print("xx_xx")
                 assert False,f"invalid tag:{tag}"  
 
             constant_pool.append(cp_info)
