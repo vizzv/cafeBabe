@@ -44,3 +44,7 @@ Add comments and documentation where necessary.
 
 - We will review your pull request as soon as possible.
 - Be open to feedback and respond to comments if any changes are requested.
+
+### 6. References
+- https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-2.html#jvms-2.1
+- https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.4.7
