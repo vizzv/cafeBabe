@@ -1,4 +1,5 @@
 import pprint as pp
+import struct
 import io
 def u4(f):
     return f.read(4)
@@ -9,9 +10,13 @@ def u1(f):
 def u_n(f,n):
     return f.read(n)
 
+def byte_to_float(b):
+    return struct.unpack('>f', b)[0] 
 
 def byte_to_int(b):
     return int.from_bytes(b,'big')
+def byte_to_int_16_bit(b):
+    int.from_bytes(b, 'big') << 8
 
 CONSTANT_Utf8	=1
 CONSTANT_Integer=3
@@ -270,7 +275,8 @@ def get_bytes_from_index(clazz,index:int):
         return get_bytes_from_index(clazz,myelement['bootstrap_method_attr_index'])
     elif(myelement['tag']=='CONSTANT_Utf8'):
         return myelement['bytes'].decode("utf_8")
-    
+    elif(myelement['tag']=='CONSTANT_Float'):
+        return byte_to_float(myelement['bytes'])
     else:
         print(f"{myelement} is not implemented in get_bytes_from_index")
         return "highOnMaal"
@@ -487,6 +493,13 @@ def parse_byte_code_from_attribute(clazz,bytess:bytearray):
             subindex1=byte_to_int(bytess[index])
             operand.append(get_bytes_from_index(clazz,subindex1))
             instruction['opcode']="astore"
+            instruction['operand']= operand
+        elif(bytess[index]==b'8'):
+            
+            index+=1
+            subindex1=byte_to_int(bytess[index])
+            operand.append(get_bytes_from_index(clazz,subindex1))
+            instruction['opcode']="fstore"
 
         elif(bytess[index]==b'*'):
             
@@ -504,8 +517,10 @@ def parse_byte_code_from_attribute(clazz,bytess:bytearray):
             
             instruction['opcode']="aload_3"
             instruction['operand']=operand
+        elif(bytess[index]==b'\x15'):
+            instruction['opcode']="iload"
+            instruction['operand']=operand 
         elif(bytess[index]==b'\x1a'):
-            
             instruction['opcode']="iload_0"
             instruction['operand']=operand    
         elif(bytess[index]==b'\x1b'):
@@ -519,7 +534,10 @@ def parse_byte_code_from_attribute(clazz,bytess:bytearray):
         elif(bytess[index]==b'\x1d'):
             
             instruction['opcode']="iload_3"
-            instruction['operand']=operand 
+            instruction['operand']=operand
+        elif(bytess[index]==b'\x36'):
+            instruction['opcode']="istore"
+            instruction['operand']=operand
         elif(bytess[index]==b';'):
             
             instruction['opcode']="istore_0"
@@ -540,10 +558,87 @@ def parse_byte_code_from_attribute(clazz,bytess:bytearray):
             
             instruction['opcode']="iadd"
             instruction['operand']=operand
+        elif(bytess[index]==b'\x64'):
+            instruction['opcode']="isub"
+            instruction['operand']=operand 
+        elif(bytess[index]==b'\x68'):
+            instruction['opcode']="imul"
+            instruction['operand']=operand
+        elif(bytess[index]==b'\x6c'):
+            instruction['opcode']="idiv"
+            instruction['operand']=operand     
+        elif(bytess[index]==b'\x80'):
+            instruction['opcode']="ior"
+            instruction['operand']=operand
+        elif(bytess[index]==b'\x82'):
+            instruction['opcode']="ixor"
+            instruction['operand']=operand
+        elif(bytess[index]==b'\x91'):
+            instruction['opcode']="i2b"
+            instruction['operand']=operand
+        elif(bytess[index]==b'\x92'):
+            instruction['opcode']="i2c"
+            instruction['operand']=operand
+        elif(bytess[index]==b'\x9a'):
+            index+=1
+            subindex1=byte_to_int(bytess[index])
+            index+=1
+            subindex2=byte_to_int(bytess[index])
+            indexx=(subindex1<<8 )|subindex2
+            operand.append(indexx)
+            instruction['opcode']="ifne"
+            instruction['operand']=operand
+        elif(bytess[index]==b'\x99'):
+            index+=1
+            subindex1=byte_to_int(bytess[index])
+            index+=1
+            subindex2=byte_to_int(bytess[index])
+            indexx=(subindex1<<8 )|subindex2
+            operand.append(indexx)
+            instruction['opcode']="ifeq"
+            instruction['operand']=operand
+        elif(bytess[index]==b'\x9b'):
             
-
+            index+=1
+            subindex1=byte_to_int(bytess[index])
+            index+=1
+            subindex2=byte_to_int(bytess[index])
+            indexx=(subindex1<<8 )|subindex2
+            operand.append(indexx)
+            instruction['opcode']="iflt"
+            instruction['operand']=operand
+        elif(bytess[index]==b'\x9c'):
+            
+            index+=1
+            subindex1=byte_to_int(bytess[index])
+            index+=1
+            subindex2=byte_to_int(bytess[index])
+            indexx=(subindex1<<8 )|subindex2
+            operand.append(indexx)
+            instruction['opcode']="ifge"
+            instruction['operand']=operand
+        elif(bytess[index]==b'\x9d'):
+            
+            index+=1
+            subindex1=byte_to_int(bytess[index])
+            index+=1
+            subindex2=byte_to_int(bytess[index])
+            indexx=(subindex1<<8 )|subindex2
+            operand.append(indexx)
+            instruction['opcode']="ifgt"
+            instruction['operand']=operand
+        elif(bytess[index]==b'\x9e'):
+            
+            index+=1
+            subindex1=byte_to_int(bytess[index])
+            index+=1
+            subindex2=byte_to_int(bytess[index])
+            indexx=(subindex1<<8 )|subindex2
+            operand.append(indexx)
+            instruction['opcode']="ifle"
+            instruction['operand']=operand
         elif(bytess[index]==b'\x00'):
-            
+
             instruction['opcode']="nop"
             instruction['operand']=operand
         elif(bytess[index]==b'\x01'):
@@ -603,6 +698,12 @@ def parse_byte_code_from_attribute(clazz,bytess:bytearray):
             subindex1=byte_to_int(bytess[index])
             operand.append(get_bytes_from_index(clazz,subindex1))
             instruction['opcode']="aload"
+            instruction['operand']=operand
+        elif(bytess[index]==b'\x17'):
+            index+=1
+            subindex1=byte_to_int(bytess[index])
+            operand.append(get_bytes_from_index(clazz,subindex1))
+            instruction['opcode']="fload"
             instruction['operand']=operand
         elif(bytess[index]==b'\x9f'):
             
@@ -714,7 +815,19 @@ def parse_byte_code_from_attribute(clazz,bytess:bytearray):
             instruction['operand']=operand
         elif(bytess[index]==b'.'):
             instruction['opcode']="iaload"
-            instruction['operand']=operand                                                                                              
+            instruction['operand']=operand
+        elif(bytess[index]==b'b'):
+            instruction['opcode']="fadd"
+            instruction['operand']=operand
+        elif(bytess[index]==b'n'):
+            instruction['opcode']="fdiv"
+            instruction['operand']=operand
+        elif(bytess[index]==b'j'):
+            instruction['opcode']="fmul"
+            instruction['operand']=operand 
+        elif(bytess[index]==b'f'):
+            instruction['opcode']="fsub"
+            instruction['operand']=operand                                                                                        
         else:
             print(f"{bytess[index]} is not implemented in parse_byte_code_from_attribute")  
         instructions.append(instruction)
